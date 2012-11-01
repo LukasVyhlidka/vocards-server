@@ -4,7 +4,7 @@
     <url>/api/v1/warm</url>
     <description>Warmup</description>
     <schedule>every 3 minutes</schedule>
-    <target>version-1</target>
+    <target>version-2</target>
     <timezone>Europe/Prague</timezone>
   </cron> 
 </cronentries>

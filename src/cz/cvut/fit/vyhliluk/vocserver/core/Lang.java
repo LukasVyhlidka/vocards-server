@@ -19,6 +19,15 @@ public enum Lang {
 		return null;
 	}
 	
+	public static Lang getByCode(String code) {
+		for (Lang l : Lang.values()) {
+			if (l.getCode().equals(code)) {
+				return l;
+			}
+		}
+		return null;
+	}
+	
 	private Lang(int id, String code) {
 		this.id = id;
 		this.code = code;

@@ -40,7 +40,7 @@ public class TranslationApi {
 
 	@GET
 	@Produces(value = "application/json")
-	public Response translate(@QueryParam("from") Integer from, @QueryParam("to") Integer to, @QueryParam("word") String word) {
+	public Response translate(@QueryParam("from") String from, @QueryParam("to") String to, @QueryParam("word") String word) {
 		ResponseBuilder rb = Response.ok();
 
 		if (from == null || to == null || StringUtil.isEmpty(word)) {
@@ -49,8 +49,8 @@ public class TranslationApi {
 			return rb.build();
 		}
 
-		Lang fromLang = Lang.getById(from);
-		Lang toLang = Lang.getById(to);
+		Lang fromLang = Lang.getByCode(from);
+		Lang toLang = Lang.getByCode(to);
 		if (fromLang == null || toLang == null) {
 			rb = Response.status(Response.Status.BAD_REQUEST);
 			rb.entity(new ErrorConverter(Const.ERROR_CODE_UNKNOWN_LANG, "Unsupported Language."));
@@ -84,10 +84,15 @@ public class TranslationApi {
 	private TransConverter createTranslation(Lang from, Lang to, String word) throws VocardsException {
 		List<String> translations = new ArrayList<String>();
 		try {
-			ScreenScraperTranslator slovnikTrans = new ScreenScraperTranslator(SlovnikScraperStrategy.getInstance());
-			if (slovnikTrans.isTransDirValid(from, to)) {
-				List<String> trans = slovnikTrans.translate(from, to, word);
-				translations.addAll(trans);
+//			ScreenScraperTranslator slovnikTrans = new ScreenScraperTranslator(SlovnikScraperStrategy.getInstance());
+//			if (slovnikTrans.isTransDirValid(from, to)) {
+//				List<String> trans = slovnikTrans.translate(from, to, word);
+//				translations.addAll(trans);
+//			}
+			
+			ITranslator transl = SlovnikCzTranslator.getInstance();
+			if (transl.isUsable(from, to, word)) {
+				translations = transl.translate(from, to, word);
 			}
 		} catch (TranslationException ex) {
 			LOG.error("Slovnik scraper error!", ex);
