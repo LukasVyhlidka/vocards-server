@@ -17,6 +17,7 @@ import cz.cvut.fit.vyhliluk.vocserver.api.conv.ErrorConverter;
 import cz.cvut.fit.vyhliluk.vocserver.api.conv.TransConverter;
 import cz.cvut.fit.vyhliluk.vocserver.api.translation.exc.BadLangCombinationException;
 import cz.cvut.fit.vyhliluk.vocserver.api.translation.exc.TranslationException;
+import cz.cvut.fit.vyhliluk.vocserver.api.translation.impl.CentrumTranslator;
 import cz.cvut.fit.vyhliluk.vocserver.api.translation.impl.GoogleTranslator;
 import cz.cvut.fit.vyhliluk.vocserver.api.translation.impl.SeznamTranslator;
 import cz.cvut.fit.vyhliluk.vocserver.core.Lang;
@@ -96,9 +97,14 @@ public class TranslationApi {
 //				translations = gTrans.translate(from, to, word);
 //			}
 			
-			ITranslator seznamTrans = SeznamTranslator.getInstance();
-			if (seznamTrans.isUsable(from, to, word)) {
-				translations = seznamTrans.translate(from, to, word);
+//			ITranslator seznamTrans = SeznamTranslator.getInstance();
+//			if (seznamTrans.isUsable(from, to, word)) {
+//				translations = seznamTrans.translate(from, to, word);
+//			}
+			
+			ITranslator centrumTrans = CentrumTranslator.getInstance();
+			if (centrumTrans.isUsable(from, to, word)) {
+				translations = centrumTrans.translate(from, to, word);
 			}
 		} catch (TranslationException ex) {
 			LOG.error("Slovnik scraper error!", ex);
