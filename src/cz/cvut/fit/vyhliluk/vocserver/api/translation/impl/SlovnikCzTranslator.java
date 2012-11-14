@@ -1,4 +1,4 @@
-package cz.cvut.fit.vyhliluk.vocserver.api.translation;
+package cz.cvut.fit.vyhliluk.vocserver.api.translation.impl;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -8,6 +8,7 @@ import java.util.List;
 import org.htmlcleaner.TagNode;
 import org.htmlcleaner.XPatherException;
 
+import cz.cvut.fit.vyhliluk.vocserver.api.translation.ITranslator;
 import cz.cvut.fit.vyhliluk.vocserver.api.translation.exc.TranslationException;
 import cz.cvut.fit.vyhliluk.vocserver.api.translation.util.HtmlCleanerUtil;
 import cz.cvut.fit.vyhliluk.vocserver.core.Lang;
