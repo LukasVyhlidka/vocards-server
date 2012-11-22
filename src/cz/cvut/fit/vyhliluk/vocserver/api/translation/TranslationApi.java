@@ -19,6 +19,7 @@ import cz.cvut.fit.vyhliluk.vocserver.api.translation.exc.BadLangCombinationExce
 import cz.cvut.fit.vyhliluk.vocserver.api.translation.exc.TranslationException;
 import cz.cvut.fit.vyhliluk.vocserver.api.translation.impl.CentrumTranslator;
 import cz.cvut.fit.vyhliluk.vocserver.api.translation.impl.GoogleTranslator;
+import cz.cvut.fit.vyhliluk.vocserver.api.translation.impl.MyMemoryTranslator;
 import cz.cvut.fit.vyhliluk.vocserver.api.translation.impl.SeznamTranslator;
 import cz.cvut.fit.vyhliluk.vocserver.core.Lang;
 import cz.cvut.fit.vyhliluk.vocserver.core.VocardsException;
@@ -102,7 +103,7 @@ public class TranslationApi {
 //				translations = seznamTrans.translate(from, to, word);
 //			}
 			
-			ITranslator centrumTrans = CentrumTranslator.getInstance();
+			ITranslator centrumTrans = MyMemoryTranslator.getInstance();
 			if (centrumTrans.isUsable(from, to, word)) {
 				translations = centrumTrans.translate(from, to, word);
 			}
