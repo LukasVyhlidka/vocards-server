@@ -1,6 +1,9 @@
 package cz.cvut.fit.vyhliluk.vocserver.api.translation;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.ThreadFactory;
 
@@ -18,9 +21,9 @@ import com.google.appengine.api.ThreadManager;
 
 import cz.cvut.fit.vyhliluk.vocserver.api.conv.ErrorConverter;
 import cz.cvut.fit.vyhliluk.vocserver.api.conv.TransConverter;
+import cz.cvut.fit.vyhliluk.vocserver.api.conv.TransListConverter;
 import cz.cvut.fit.vyhliluk.vocserver.api.translation.TranslationThread.Result;
 import cz.cvut.fit.vyhliluk.vocserver.api.translation.exc.BadLangCombinationException;
-import cz.cvut.fit.vyhliluk.vocserver.api.translation.exc.TranslationException;
 import cz.cvut.fit.vyhliluk.vocserver.api.translation.impl.CentrumTranslator;
 import cz.cvut.fit.vyhliluk.vocserver.api.translation.impl.GoogleTranslator;
 import cz.cvut.fit.vyhliluk.vocserver.api.translation.impl.MyMemoryTranslator;
@@ -82,7 +85,7 @@ public class TranslationApi {
 		}
 
 		try {
-			TransConverter conv = this.createTranslation(fromLang, toLang, word);
+			TransListConverter conv = this.createTranslation(fromLang, toLang, word);
 			rb.entity(conv);
 		} catch (BadLangCombinationException ex) {
 			rb = Response.status(Response.Status.BAD_REQUEST);
@@ -99,7 +102,7 @@ public class TranslationApi {
 
 	// ================= PRIVATE METHODS ========================
 
-	private TransConverter createTranslation(Lang from, Lang to, String word) throws VocardsException {
+	private TransListConverter createTranslation(Lang from, Lang to, String word) throws VocardsException {
 		List<String> translations = new ArrayList<String>();
 
 		ThreadFactory factory = ThreadManager.currentRequestThreadFactory();
@@ -140,40 +143,35 @@ public class TranslationApi {
 			}
 		}
 
-		TransConverter res = new TransConverter(word, translations);
+		TransListConverter res = this.createRes(word, translations);
 		return res;
 	}
-
-	// private TransConverter createTranslation(Lang from, Lang to, String word)
-	// throws VocardsException {
-	// List<String> translations = new ArrayList<String>();
-	// try {
-	// // ITranslator transl = SlovnikCzTranslator.getInstance();
-	// // if (transl.isUsable(from, to, word)) {
-	// // translations = transl.translate(from, to, word);
-	// // }
-	//
-	// // ITranslator gTrans = GoogleTranslator.getInstance();
-	// // if (gTrans.isUsable(from, to, word)) {
-	// // translations = gTrans.translate(from, to, word);
-	// // }
-	//
-	// // ITranslator seznamTrans = SeznamTranslator.getInstance();
-	// // if (seznamTrans.isUsable(from, to, word)) {
-	// // translations = seznamTrans.translate(from, to, word);
-	// // }
-	//
-	// // ITranslator centrumTrans = MyMemoryTranslator.getInstance();
-	// // if (centrumTrans.isUsable(from, to, word)) {
-	// // translations = centrumTrans.translate(from, to, word);
-	// // }
-	// } catch (TranslationException ex) {
-	// LOG.error("Slovnik scraper error!", ex);
-	// }
-	//
-	// TransConverter res = new TransConverter(word, translations);
-	// return res;
-	// }
+	
+	private TransListConverter createRes(String word, List<String> translations) {
+		Collections.sort(translations);
+		
+		List<TransConverter> tcList = new ArrayList<TransConverter>();
+		
+		Iterator<String> it = translations.iterator();
+		TransConverter tc = null;
+		while (it.hasNext()) {
+			String t = it.next();
+			if (tc == null || ! tc.getTranslation().equals(t)) {
+				tc = new TransConverter(t, 1);
+				tcList.add(tc);
+			} else {
+				tc.setCount(tc.getCount() + 1);
+			}
+		}
+		
+		Collections.sort(tcList, new Comparator<TransConverter>() {
+			public int compare(TransConverter o1, TransConverter o2) {
+				return o2.getCount() - o1.getCount();
+			}
+		});
+		
+		return new TransListConverter(word, tcList);
+	}
 
 	// ================= GETTERS/SETTERS ========================
 

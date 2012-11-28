@@ -72,7 +72,7 @@ public class CentrumTranslator implements ITranslator {
 					if (translWord.equalsIgnoreCase(thText)) {
 						TagNode[] lis = tr.getElementsByName("li", true);
 						for (TagNode li : lis) {
-							res.add(li.getText().toString());
+							res.add(li.getText().toString().trim());
 						}
 					}
 				}

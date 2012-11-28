@@ -1,59 +1,50 @@
 package cz.cvut.fit.vyhliluk.vocserver.api.conv;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
-
-@XmlRootElement(name="trans")
+@XmlRootElement(name = "trans")
 public class TransConverter {
-	//================= STATIC ATTRIBUTES ======================
 
-	//================= INSTANCE ATTRIBUTES ====================
-	
-	private String word;
-	
-	private List<String> translations = new ArrayList<String>();
+	// ==================== STATIC ATTRIBUTES ==================
 
-	//================= STATIC METHODS =========================
+	// ==================== INSTANCE ATTRIBUTES ================
 
-	//================= CONSTRUCTORS ===========================
-	
-	public TransConverter(String word, List<String> translations) {
+	private String translation;
+
+	private int count;
+
+	// ==================== STATIC METHODS =====================
+
+	// ==================== CONSTRUCTORS =======================
+
+	public TransConverter(String translation, int count) {
 		super();
-		this.word = word;
-		this.translations = translations;
-	}
-	
-	public TransConverter() {
-		super();
+		this.translation = translation;
+		this.count = count;
 	}
 
-	//================= OVERRIDEN METHODS ======================
+	// ==================== OVERRIDEN METHODS ==================
 
-	//================= INSTANCE METHODS =======================
+	// ==================== INSTANCE METHODS ===================
 
-	//================= PRIVATE METHODS ========================
+	// ==================== PRIVATE METHODS ====================
 
-	//================= GETTERS/SETTERS ========================
-	
+	// ==================== GETTERS/SETTERS ====================
+
 	@XmlElement
-	public String getWord() {
-		return word;
+	public String getTranslation() {
+		return translation;
 	}
 
-	public void setWord(String word) {
-		this.word = word;
-	}
-
-//	@XmlElement
 	@XmlElement
-	public List<String> getTranslations() {
-		return translations;
+	public int getCount() {
+		return count;
 	}
 
-	//================= INNER CLASSES ==========================
+	public void setCount(int count) {
+		this.count = count;
+	}
 
+	// ==================== INNER CLASSES ======================
 }

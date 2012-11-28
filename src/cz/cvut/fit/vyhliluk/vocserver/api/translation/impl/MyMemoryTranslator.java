@@ -93,7 +93,7 @@ public class MyMemoryTranslator implements ITranslator {
 			if (root.has(JSON_KEY_RESPONSE_DATA)) {
 				JSONObject respData = root.getJSONObject(JSON_KEY_RESPONSE_DATA);
 				if (respData.has(JSON_KEY_TRANSLATED_TEXT)) {
-					res.add(respData.getString(JSON_KEY_TRANSLATED_TEXT));
+					res.add(respData.getString(JSON_KEY_TRANSLATED_TEXT).trim());
 				}
 			}
 		} catch (JSONException ex) {

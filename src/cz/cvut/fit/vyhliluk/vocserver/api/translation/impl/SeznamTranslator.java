@@ -74,7 +74,7 @@ public class SeznamTranslator implements ITranslator {
 		}
 
 		if (sb.length() > 0) {
-			res.add(sb.toString());
+			res.add(sb.toString().trim());
 		}
 
 		return new ArrayList<String>(res);

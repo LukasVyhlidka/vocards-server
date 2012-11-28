@@ -98,7 +98,7 @@ public class GoogleTranslator implements ITranslator {
 				JSONArray sentences = root.getJSONArray(JSON_KEY_SENTENCES);
 				for (int i = 0; i < sentences.length(); i++) {
 					JSONObject sentence = sentences.getJSONObject(i);
-					res.add(sentence.getString(JSON_KEY_TRANS));
+					res.add(sentence.getString(JSON_KEY_TRANS).trim());
 				}
 			}
 
@@ -112,7 +112,7 @@ public class GoogleTranslator implements ITranslator {
 					if (dict.has(JSON_KEY_TERMS)) {
 						JSONArray terms = dict.getJSONArray(JSON_KEY_TERMS);
 						for (int j = 0; j < terms.length(); j++) {
-							res.add(terms.getString(j));
+							res.add(terms.getString(j).trim());
 						}
 					}
 					if (dict.has(JSON_KEY_ENTRY)) {
@@ -131,7 +131,7 @@ public class GoogleTranslator implements ITranslator {
 	}
 
 	private void appendWord(JSONObject dict, Set<String> translations) throws JSONException {
-		translations.add(dict.getString(JSON_KEY_WORD));
+		translations.add(dict.getString(JSON_KEY_WORD).trim());
 	}
 
 	// ==================== GETTERS/SETTERS ====================

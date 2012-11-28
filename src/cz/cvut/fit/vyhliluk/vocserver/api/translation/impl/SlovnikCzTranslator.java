@@ -71,7 +71,7 @@ public class SlovnikCzTranslator implements ITranslator {
 				
 				String lText = l.getText().toString();
 				if (l.getText().toString().toLowerCase().equals(translWord)) {
-					res.add(r.getText().toString());
+					res.add(r.getText().toString().trim());
 				}
 			}
 		} catch (XPatherException ex) {
